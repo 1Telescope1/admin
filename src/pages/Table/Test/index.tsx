@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import CustomBreadcrumb from '/@/components/CommonBreadcrumb';
 import { Space } from 'antd';
 import { useChangeLang } from '/@/hooks';
 import CommonTable from '/@/components/CommonTable';
+import CommonForm from '/@/components/CommonForm';
 
 const Test = () => {
   const { t } = useChangeLang();
@@ -64,9 +65,50 @@ const Test = () => {
     },
   ];
 
+  const formItems = [
+    {
+      name: 'test',
+      type: 'Input',
+      label: 'First Name',
+      rules: [{ required: true, message: 'First name is required' }],
+    },
+    {
+      name: 'test123',
+      type: 'Input',
+      label: 'First Name',
+      rules: [{ required: true, message: 'First name is required' }],
+    },
+    {
+      type: 'Input',
+      label: 'First Name',
+      rules: [{ required: true, message: 'First name is required' }],
+    },
+    {
+      type: 'Input',
+      label: 'First Name',
+      rules: [{ required: true, message: 'First name is required' }],
+    },
+  ];
+
+  const formRef = useRef(null);
+
+  const onFinish = (values: any) => {
+    console.log(values);
+  };
+
+  const onReset = () => {
+    console.log(formRef.current);
+  };
+
   return (
     <>
       <CustomBreadcrumb arr={[t('table.editableTable.menu'), t('table.editableTable.subMenu')]} />
+      <CommonForm
+        ref={formRef}
+        items={formItems}
+        onReset={onReset}
+        onFinish={onFinish}
+      ></CommonForm>
       <CommonTable
         data={dataSource}
         columns={columns}
