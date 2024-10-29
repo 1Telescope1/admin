@@ -8,6 +8,7 @@ import CommonRoute from '/@/components/CommonRoute';
 import Dashboard from '/@/pages/Dashboard';
 import EditableTable from '/@/pages/Table/EditableTable';
 import DragSortingTable from '/@/pages/Table/DragSortingTable';
+import Test from '/@/pages/Table/Test'
 import LineChart from '/@/pages/Chart/LineChart';
 import PieChart from '/@/pages/Chart/PieChart';
 import RichText from '/@/pages/Components/RichText';
@@ -33,6 +34,10 @@ const routes: Array<{
   {
     component: DragSortingTable,
     path: '/table/dragSortingTable',
+  },
+  {
+    component: Test,
+    path: '/table/test',
   },
   {
     component: LineChart,

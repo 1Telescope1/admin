@@ -69,36 +69,30 @@ const SlideBar: FC<ISlideBar> = ({ history, menus, collapsed }: ISlideBar) => {
         selectedKeys={selectedKeys}
         mode="inline"
         theme="dark"
-        // @ts-ignore
         onOpenChange={onOpenChange}
         onClick={onMenuItemClick}
-      >
-        {menus &&
-          menus.map((menu: CompItemType) => {
-            const { component, key, path, sub, icon } = menu;
-            return sub && sub.length ? (
-              <SubMenu key={key} icon={icon && renderIcon(icon)} title={component}>
-                {sub &&
-                  sub.map((s: CompItemType) => {
-                    const { component, path, key } = s;
-                    return (
-                      <Menu.Item key={key} onClick={(e) => selectMenuItem(path)}>
-                        {component}
-                      </Menu.Item>
-                    );
-                  })}
-              </SubMenu>
-            ) : (
-              <Menu.Item
-                key={key}
-                icon={icon && renderIcon(icon)}
-                onClick={(e) => selectMenuItem(path)}
-              >
-                {component}
-              </Menu.Item>
-            );
-          })}
-      </Menu>
+        items={menus.map((menu: CompItemType) => {
+          const { component, key, path, sub, icon } = menu;
+
+          if (sub && sub.length) {
+            return {
+              key,
+              icon: icon && renderIcon(icon),
+              label: component,
+              children: sub.map((s: CompItemType) => ({
+                key: s.key,
+                label: <span onClick={() => selectMenuItem(s.path)}>{s.component}</span>,
+              })),
+            };
+          } else {
+            return {
+              key,
+              icon: icon && renderIcon(icon),
+              label: <span onClick={() => selectMenuItem(path)}>{component}</span>,
+            };
+          }
+        })}
+      />
     </Sider>
   );
 };

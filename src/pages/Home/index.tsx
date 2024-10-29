@@ -77,11 +77,14 @@ const Home: FC<IHome> = ({ history }: IHome) => {
   };
 
   const headMenu = (
-    <Menu>
-      <Menu.Item key="1">
-        <span onClick={logout}>退出登录</span>
-      </Menu.Item>
-    </Menu>
+    <Menu
+      items={[
+        {
+          key: '1',
+          label: <span onClick={logout}>退出登录</span>,
+        },
+      ]}
+    ></Menu>
   );
 
   const login = (
@@ -98,26 +101,28 @@ const Home: FC<IHome> = ({ history }: IHome) => {
       { text: '中文', lng: 'zh-CN', key: 1 },
       { text: 'English', lng: 'en', key: 2 },
     ];
+
     return (
-      <Menu>
-        {options &&
-          options.map((option) => (
-            <Menu.Item key={option.key}>
-              <span
-                className={selectedIndex === option.key ? style['is-translationOpt-selected'] : ''}
-                onClick={() => {
-                  changeLanguage(option.lng);
-                  loginStore.setLng(option.lng);
-                  setSelectedIndex(option.key);
-                }}
-              >
-                {option.text}
-              </span>
-            </Menu.Item>
-          ))}
-      </Menu>
+      <Menu
+        items={options.map((option) => ({
+          key: option.key,
+          label: (
+            <span
+              className={selectedIndex === option.key ? style['is-translationOpt-selected'] : ''}
+              onClick={() => {
+                changeLanguage(option.lng);
+                loginStore.setLng(option.lng);
+                setSelectedIndex(option.key);
+              }}
+            >
+              {option.text}
+            </span>
+          ),
+        }))}
+      />
     );
   };
+
 
   const renderTranslation = () => (
     <Dropdown overlay={translationOptions} trigger={['click']} arrow>
