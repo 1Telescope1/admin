@@ -4,18 +4,19 @@ import { StaticContext } from 'react-router';
 import { Spin, Space } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import random from 'number-random';
-import CommonRoute from '/@/components/CommonRoute';
-import Dashboard from '/@/pages/Dashboard';
-import EditableTable from '/@/pages/Table/EditableTable';
-import DragSortingTable from '/@/pages/Table/DragSortingTable';
-import Test from '/@/pages/Table/Test'
-import LineChart from '/@/pages/Chart/LineChart';
-import PieChart from '/@/pages/Chart/PieChart';
-import RichText from '/@/pages/Components/RichText';
-import Markdown from '/@/pages/Components/Markdown';
-import JsonEditor from '/@/pages/Components/JsonEditor';
-import ExcelExport from '/@/pages/Excel/Export';
-import NotFound from '/@/pages/NotFound';
+
+const CommonRoute = lazy(() => import('/@/components/CommonRoute'));
+const Dashboard = lazy(() => import('/@/pages/Dashboard'));
+const EditableTable = lazy(() => import('/@/pages/Table/EditableTable'));
+const DragSortingTable = lazy(() => import('/@/pages/Table/DragSortingTable'));
+const Test = lazy(() => import('/@/pages/Table/Test'));
+const LineChart = lazy(() => import('/@/pages/Chart/LineChart'));
+const PieChart = lazy(() => import('/@/pages/Chart/PieChart'));
+const RichText = lazy(() => import('/@/pages/Components/RichText'));
+const Markdown = lazy(() => import('/@/pages/Components/Markdown'));
+const JsonEditor = lazy(() => import('/@/pages/Components/JsonEditor'));
+const ExcelExport = lazy(() => import('/@/pages/Excel/Export'));
+const NotFound = lazy(() => import('/@/pages/NotFound'));
 
 const routes: Array<{
   component:

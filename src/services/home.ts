@@ -1,5 +1,5 @@
 import { AxiosRequestConfig } from 'axios';
-import { HomeAPI as API } from '/@/utils';
+// import { HomeAPI as API } from '/@/utils';
 import { getMenus, getUsers } from '../../mock/index';
 const isProd = process.env.NODE_ENV === 'production';
 

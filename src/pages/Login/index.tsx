@@ -4,6 +4,8 @@ import classNames from 'classnames';
 import { home } from '/@/services';
 import { useStore } from '/@/stores';
 import style from './index.module.less';
+import axios from 'axios';
+import { getUsers } from '../../../mock';
 
 const layout = {
   labelCol: { span: 8 },
@@ -18,12 +20,33 @@ interface ILogin {
   history: any;
 }
 
+async function loginService(username: string, password: string) {
+  const data = new URLSearchParams();
+  data.append('username', username);
+  data.append('password', password);
+  try {
+    const response = await axios.post(`/api/v1/users/login`, data, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+    console.log('Response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+}
+
 const Login: FC<ILogin> = ({ history }: ILogin) => {
   const { loginStore } = useStore();
-  const onFinish = async (values: { userName: string; passWord: string; remember: boolean }) => {
-    const data = await home.login(values);
-    if (data.ret === '0') {
-      const { roleType, userName, avatar } = data.data;
+  const onFinish = async (values: { username: string; password: string; remember: boolean }) => {
+    const res = await loginService(values.username, values.password);
+
+    if (res.code == 200) {
+      const data = getUsers(values.username, values.password, true);
+      // @ts-ignore
+      const { roleType , userName, avatar } = data.data;
       await loginStore.setUserInfo({
         roleType,
         userName,
@@ -32,7 +55,7 @@ const Login: FC<ILogin> = ({ history }: ILogin) => {
       await loginStore.toggleLogin(true, { userName });
       await history.push('/dashboard');
     } else {
-      message.error(`${data.msg}, 用户名和密码不符`);
+      message.error(`${res.msg}, 用户名和密码不符`);
     }
   };
 
@@ -47,27 +70,27 @@ const Login: FC<ILogin> = ({ history }: ILogin) => {
         <Form
           {...layout}
           name="basic"
-          initialValues={{ remember: true }}
+          initialValues={{ username: 'admin', password: 'admin', remember: true }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           className={style['login__form__form']}
         >
           <Form.Item
             label="用户名"
-            name="userName"
+            name="username"
             labelAlign="left"
             rules={[{ required: true, message: '请输入用户名!' }]}
           >
-            <Input placeholder="管理admin,运营zenquan" />
+            <Input placeholder="管理admin" />
           </Form.Item>
 
           <Form.Item
             label="密码"
-            name="passWord"
+            name="password"
             labelAlign="left"
             rules={[{ required: true, message: '请输入密码!' }]}
           >
-            <Input.Password placeholder="管理admin,运营zenquan" />
+            <Input.Password placeholder="管理admin" />
           </Form.Item>
 
           <Form.Item {...tailLayout} name="remember" valuePropName="checked">

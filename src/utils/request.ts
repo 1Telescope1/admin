@@ -1,56 +1,58 @@
-import axios, { AxiosRequestConfig, AxiosInstance, AxiosResponse, AxiosError } from 'axios';
+import axios, { type Method } from 'axios'
 
-export interface IAPI {
-  getInstance(): AxiosInstance | null;
+export interface Result<T> {
+  status: number
+  data: T
+  message: string | null,
+  success: boolean
 }
-
-export default class API implements IAPI {
-  private api: AxiosInstance | null = null;
-
-  private created(config: AxiosRequestConfig): void {
-    this.api = axios.create(config);
+// 1. 新axios实例，基础配置
+const baseURL = import.meta.env.VITE_BASE_API;
+const instance = axios.create({
+  baseURL: baseURL,
+  timeout: 10000,
+});
+// 2. 请求拦截器，携带token
+instance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token')
+    const username = localStorage.getItem('username')
+    if (token && username && config.headers) {
+      config.headers.token = `${token}`;
+      config.headers.username = `${username}`;
+    }
+    return config;
+  },
+  (err) => Promise.reject(err)
+);
+// 3. 响应拦截器，剥离无效数据，401拦截
+instance.interceptors.response.use(
+  (res) => {
+    if (res.data?.status != 200) {
+      return Promise.reject(res.data);
+    }
+    return res.data;
+  },
+  (err) => {
+    const response = err.response.data
+    if (err.response.status == 500) {
+      // notification("error", err.response.statusText, "error")
+    } else {
+      // notification("error", response.data, "error")
+    }
+    return Promise.reject(err);
   }
-
-  private handleInterceptors() {
-    this.api &&
-      this.api.interceptors.request.use(
-        (config: AxiosRequestConfig) => {
-          return config;
-        },
-        (err: AxiosError) => {
-          return Promise.reject(err);
-        },
-      );
-
-    this.api &&
-      this.api.interceptors.response.use(
-        async (res: AxiosResponse) => {
-          // @todo
-          const { status, data } = res;
-          if (status === 200) {
-            return data;
-          }
-        },
-        (err: AxiosError) => {
-          return Promise.reject(err);
-        },
-      );
-  }
-
-  constructor(config: AxiosRequestConfig) {
-    this.created(config);
-    this.handleInterceptors();
-  }
-
-  public getInstance(): AxiosInstance | null {
-    return this.api;
-  }
+);
+export const request = <T>(
+  url: string,
+  method: Method = 'GET',
+  submitData?: object
+) => {
+  // 参数：地址，请求方式，提交的数据
+  // 返回：promise
+  return instance.request<any, Result<T>>({
+    url,
+    method,
+    [method.toUpperCase() === 'GET' ? 'params' : 'data']: submitData
+  })
 }
-
-export const mainAPI = new API({
-  baseURL: `//${document.domain}/app`,
-}).getInstance();
-
-export const HomeAPI = new API({
-  baseURL: '/api',
-}).getInstance();

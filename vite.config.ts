@@ -26,10 +26,9 @@ export default ({ mode, command }) => {
 
   let proxy = {
     '/api': {
-      target: 'xxx/api',
-      pathRewrite: { '^/api': '' },
-      secure: false,
+      target: 'http://8.138.116.37:20006',
       changeOrigin: true,
+      secure: false,
     },
   };
 
@@ -56,7 +55,7 @@ export default ({ mode, command }) => {
       // https: true,
       host: '0.0.0.0',
       port: 3000,
-      proxy,
+      proxy
     },
     build: {
       target: 'es2015',
