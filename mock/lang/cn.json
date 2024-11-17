@@ -84,19 +84,6 @@
       ]
     },
     {
-      "component": "Excel",
-      "path": "/excel",
-      "key": "excel",
-      "icon": "excel",
-      "sub": [
-        {
-          "component": "导出excel",
-          "path": "/excel/export",
-          "key": "excel/export"
-        }
-      ]
-    },
-    {
       "component": "404页",
       "path": "/404",
       "key": "404",

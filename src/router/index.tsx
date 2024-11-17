@@ -15,7 +15,6 @@ const PieChart = lazy(() => import('/@/pages/Chart/PieChart'));
 const RichText = lazy(() => import('/@/pages/Components/RichText'));
 const Markdown = lazy(() => import('/@/pages/Components/Markdown'));
 const JsonEditor = lazy(() => import('/@/pages/Components/JsonEditor'));
-const ExcelExport = lazy(() => import('/@/pages/Excel/Export'));
 const NotFound = lazy(() => import('/@/pages/NotFound'));
 
 const routes: Array<{
@@ -59,10 +58,6 @@ const routes: Array<{
   {
     component: JsonEditor,
     path: '/components/jsonEditor',
-  },
-  {
-    component: ExcelExport,
-    path: '/excel/export',
   },
   {
     component: NotFound,
