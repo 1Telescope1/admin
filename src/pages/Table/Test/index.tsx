@@ -1,45 +1,41 @@
 import React, { useEffect, useRef, useState } from 'react';
 import CustomBreadcrumb from '/@/components/CommonBreadcrumb';
-import { Space } from 'antd';
+import { Popconfirm, Space, Tag, message } from 'antd';
 import { useChangeLang } from '/@/hooks';
 import CommonTable from '/@/components/CommonTable';
 import CommonForm from '/@/components/CommonForm';
-import { reqGetAllVote } from '/@/services';
+import { reqDeleteActivity, reqGetActivityList } from '/@/services';
 import dayjs from 'dayjs'
 
 const Test = () => {
   const { t } = useChangeLang();
   const [dataSource, setDataSource] = useState<any>([]);
-  const [current, setCurrent] = useState(1);
-  const [size, setSize] = useState(10);
+  const [size, setSize] = useState(10)
+  const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false)
 
-  const data = Array.from({ length: total }, (_, index) => ({
-    key: index,
-    name: 'test',
-    age: index,
-    address: 'test',
-  }));
-
-  const getData = (data) => {
-    reqGetAllVote(data).then(res => {
+  const getData = (current = page,pageSize = size) => {
+    const values = formRef.current.form.getFieldsValue(true)
+    const body = {
+      ...values,
+      page: current,
+      size: pageSize
+    }
+    setLoading(true)
+    reqGetActivityList(body).then(res => {
       const resData = res.data
-      console.log(resData, 123);
       setDataSource(resData.records)
+      setPage(resData.current)
       setSize(resData.size)
       setTotal(resData.total)
-      setCurrent(resData.current)
-    }) 
+    }).finally(() => {
+      setLoading(false)
+    })
   }
 
   useEffect(() => {
-    const values = formRef.current.form.getFieldsValue(true)
-    const data = {
-      ...values,
-      current,
-      size
-    }
-    getData(data)
+    getData()
   }, []);
 
   const test = () => {
@@ -48,9 +44,17 @@ const Test = () => {
 
   const onChange = (pagination: any) => {
     const { current, pageSize } = pagination;
-    setCurrent(current);
+    setPage(current);
     setSize(pageSize);
+    getData(current, pageSize)
   };
+
+  const handleDelete = (key) => {
+    reqDeleteActivity(key).then(res => {
+      message.success('This is a success message');
+      getData()
+    })
+  }
 
   const columns = [
     {
@@ -64,10 +68,15 @@ const Test = () => {
       key: 'intro',
     },
     {
+      title: '类型',
+      dataIndex: 'genre',
+      key: 'genre',
+    },
+    {
       title: '开始时间',
       dataIndex: 'startTime',
       key: 'startTime',
-      render:(value) => {
+      render: (value) => {
         return dayjs(value).format('YYYY-MM-DD')
       }
     },
@@ -75,6 +84,18 @@ const Test = () => {
       title: '活动状态',
       dataIndex: 'state',
       key: 'state',
+      render:(value) => {
+        switch (value) {
+          case 'editing':
+            return <Tag color='processing'>编辑中</Tag>
+          case 'pending':
+            return <Tag color='warning'>审核中</Tag>
+          case 'approved':
+            return <Tag color='success'>通过</Tag>
+          case 'rejected':
+            return <Tag color='error'>拒绝</Tag>
+        }
+      }
     },
     {
       title: 'Action',
@@ -82,11 +103,11 @@ const Test = () => {
       render: (_, record) => (
         <Space size="middle">
           <a onClick={test} style={{ color: 'blue' }}>
-            Invite {record.name}
+            查看详情
           </a>
-          <a onClick={test} style={{ color: 'blue' }}>
-            Delete
-          </a>
+          <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
+            <a style={{ color: 'red' }}>Delete</a>
+          </Popconfirm>
         </Space>
       ),
     },
@@ -132,7 +153,7 @@ const Test = () => {
   const onFinish = (values: any) => {
     const data = {
       ...values,
-      current,
+      page,
       size
     }
     getData(data)
@@ -142,7 +163,7 @@ const Test = () => {
     const values = formRef.current.form.getFieldsValue(true)
     const data = {
       ...values,
-      current,
+      page,
       size
     }
     getData(data)
@@ -158,9 +179,10 @@ const Test = () => {
         onFinish={onFinish}
       ></CommonForm>
       <CommonTable
+        loading={loading}
         data={dataSource}
         columns={columns}
-        current={current}
+        current={page}
         pageSize={size}
         total={total}
         onChange={onChange}

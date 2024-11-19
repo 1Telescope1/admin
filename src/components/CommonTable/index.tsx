@@ -7,11 +7,12 @@ type Props = {
   current: number;
   pageSize: number;
   total: number;
+  loading: boolean;
   onChange: (pagination: { current: number; pageSize: number }) => void;
 };
 
 function CommonTable(props: Props) {
-  const { data, columns, current, pageSize, total, onChange } = props;
+  const { data, columns, current, pageSize, total, loading, onChange } = props;  
 
   const handleTableChange = (pagination: { current: number; pageSize: number }) => {
     onChange(pagination);
@@ -19,6 +20,7 @@ function CommonTable(props: Props) {
 
   return (
     <Table
+      loading={loading}
       columns={columns}
       dataSource={data}
       pagination={{
