@@ -44,8 +44,6 @@ const Test = () => {
 
   const onChange = (pagination: any) => {
     const { current, pageSize } = pagination;
-    setPage(current);
-    setSize(pageSize);
     getData(current, pageSize)
   };
 
@@ -60,7 +58,7 @@ const Test = () => {
     {
       title: '活动标题',
       dataIndex: 'tittle',
-      key: 'tittle',
+      key: 'tittle'
     },
     {
       title: '活动介绍',
@@ -120,6 +118,11 @@ const Test = () => {
       label: '活动标题',
     },
     {
+      name: 'genre',
+      type: 'Input',
+      label: '类型',
+    },
+    {
       name: 'state',
       type: 'Select',
       label: '活动状态',
@@ -150,23 +153,12 @@ const Test = () => {
 
   const formRef = useRef(null);
 
-  const onFinish = (values: any) => {
-    const data = {
-      ...values,
-      page,
-      size
-    }
-    getData(data)
+  const onFinish = () => {
+    getData()
   };
 
   const onReset = () => {
-    const values = formRef.current.form.getFieldsValue(true)
-    const data = {
-      ...values,
-      page,
-      size
-    }
-    getData(data)
+    getData()
   };
 
   return (
