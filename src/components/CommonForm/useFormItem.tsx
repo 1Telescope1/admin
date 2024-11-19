@@ -1,12 +1,14 @@
 import React from 'react';
-import { Col, Form, Input } from 'antd';
+import { Col, Form, Input, Select } from 'antd';
 
 const renderCmp = (item:any) => {
   let cmp = null
   switch (item.type) {
     case 'Input':
-      cmp = <Input placeholder="First Name" />;
+      cmp = <Input {...item.props}/>;
       break;
+    case 'Select':
+      cmp = <Select {...item.props}></Select>
     default:
       break;
   }

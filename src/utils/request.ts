@@ -1,8 +1,8 @@
 import axios, { type Method } from 'axios'
 
-export interface Result<T> {
+export interface Result{
   status: number
-  data: T
+  data: any
   message: string | null,
   success: boolean
 }
@@ -16,7 +16,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token')
-    const username = localStorage.getItem('username')
+    const username = localStorage.getItem('username')    
     if (token && username && config.headers) {
       config.headers.token = `${token}`;
       config.headers.username = `${username}`;
@@ -27,8 +27,8 @@ instance.interceptors.request.use(
 );
 // 3. 响应拦截器，剥离无效数据，401拦截
 instance.interceptors.response.use(
-  (res) => {
-    if (res.data?.status != 200) {
+  (res) => {    
+    if (res.data?.code != 200) {
       return Promise.reject(res.data);
     }
     return res.data;
@@ -50,7 +50,7 @@ export const request = <T>(
 ) => {
   // 参数：地址，请求方式，提交的数据
   // 返回：promise
-  return instance.request<any, Result<T>>({
+  return instance.request<any, Result>({
     url,
     method,
     [method.toUpperCase() === 'GET' ? 'params' : 'data']: submitData

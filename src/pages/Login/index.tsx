@@ -29,8 +29,9 @@ async function loginService(username: string, password: string) {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-    });
-    console.log('Response:', response.data);
+    });    
+    localStorage.setItem('token', response.data.data.token)
+    localStorage.setItem('username', response.data.data.username)
     return response.data;
   } catch (error) {
     console.error('Error:', error);
