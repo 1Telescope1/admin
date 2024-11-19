@@ -61,29 +61,6 @@
       ]
     },
     {
-      "component": "组件",
-      "path": "/components",
-      "key": "components",
-      "icon": "components",
-      "sub": [
-        {
-          "component": "富文本编辑器",
-          "path": "/components/richText",
-          "key": "components/richText"
-        },
-        {
-          "component": "Markdown",
-          "path": "/components/markdown",
-          "key": "components/markdown"
-        },
-        {
-          "component": "JSON编辑器",
-          "path": "/components/jsonEditor",
-          "key": "components/jsonEditor"
-        }
-      ]
-    },
-    {
       "component": "404页",
       "path": "/404",
       "key": "404",

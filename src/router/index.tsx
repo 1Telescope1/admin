@@ -12,9 +12,6 @@ const DragSortingTable = lazy(() => import('/@/pages/Table/DragSortingTable'));
 const Test = lazy(() => import('/@/pages/Table/Test'));
 const LineChart = lazy(() => import('/@/pages/Chart/LineChart'));
 const PieChart = lazy(() => import('/@/pages/Chart/PieChart'));
-const RichText = lazy(() => import('/@/pages/Components/RichText'));
-const Markdown = lazy(() => import('/@/pages/Components/Markdown'));
-const JsonEditor = lazy(() => import('/@/pages/Components/JsonEditor'));
 const NotFound = lazy(() => import('/@/pages/NotFound'));
 
 const routes: Array<{
@@ -46,18 +43,6 @@ const routes: Array<{
   {
     component: PieChart,
     path: '/chart/pieChart',
-  },
-  {
-    component: RichText,
-    path: '/components/richText',
-  },
-  {
-    component: Markdown,
-    path: '/components/markdown',
-  },
-  {
-    component: JsonEditor,
-    path: '/components/jsonEditor',
   },
   {
     component: NotFound,
