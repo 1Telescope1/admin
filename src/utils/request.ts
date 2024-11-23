@@ -1,3 +1,4 @@
+import { message } from 'antd';
 import axios, { type Method } from 'axios'
 
 export interface Result{
@@ -29,30 +30,36 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (res) => {    
     if (res.data?.code != 200) {
+      message.error(res.data.message);
       return Promise.reject(res.data);
     }
     return res.data;
   },
-  (err) => {
+  (err) => {    
     const response = err.response.data
     if (err.response.status == 500) {
       // notification("error", err.response.statusText, "error")
     } else {
       // notification("error", response.data, "error")
     }
+    console.log(err);
+    
+    message.success('This is a success message');
     return Promise.reject(err);
   }
 );
 export const request = <T>(
   url: string,
   method: Method = 'GET',
-  submitData?: object
+  submitData?: object,
+  params?: Object
 ) => {
   // 参数：地址，请求方式，提交的数据
   // 返回：promise
   return instance.request<any, Result>({
     url,
     method,
-    [method.toUpperCase() === 'GET' ? 'params' : 'data']: submitData
+    [method.toUpperCase() === 'GET' ? 'params' : 'data']: submitData,
+    params
   })
 }

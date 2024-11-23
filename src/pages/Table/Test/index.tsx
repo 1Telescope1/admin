@@ -9,7 +9,6 @@ import dayjs from 'dayjs'
 import { useHistory } from 'react-router-dom';
 
 const Test = () => {
-  const { t } = useChangeLang();
   const [dataSource, setDataSource] = useState<any>([]);
   const [size, setSize] = useState(10)
   const [page, setPage] = useState(1);
@@ -61,7 +60,7 @@ const Test = () => {
 
   const handleDelete = (key) => {
     reqDeleteActivity(key).then(res => {
-      message.success('This is a success message');
+      message.success('删除成功');
       getData()
     })
   }
@@ -144,8 +143,8 @@ const Test = () => {
           <a onClick={() => gotoActivityDetail(_)} style={{ color: 'blue' }}>
             查看详情
           </a>
-          <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
-            <a style={{ color: 'red' }}>Delete</a>
+          <Popconfirm title="确定删除吗?" onConfirm={() => handleDelete(record.id)}>
+            <a style={{ color: 'red' }}>删除</a>
           </Popconfirm>
         </Space>
       ),
