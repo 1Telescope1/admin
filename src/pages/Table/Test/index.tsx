@@ -4,7 +4,7 @@ import { Popconfirm, Space, Tag, message } from 'antd';
 import { useChangeLang } from '/@/hooks';
 import CommonTable from '/@/components/CommonTable';
 import CommonForm from '/@/components/CommonForm';
-import { reqDeleteActivity, reqGetActivityList } from '/@/services';
+import { reqChangeAcitivity, reqDeleteActivity, reqGetActivityList } from '/@/services';
 import dayjs from 'dayjs'
 
 const Test = () => {
@@ -42,6 +42,17 @@ const Test = () => {
     console.log(123);
   };
 
+  const changeAcitivity = (id, state) => {
+    const data = {
+      id,
+      state
+    }
+    reqChangeAcitivity(data).then(res => {
+      console.log(123);
+      getData()
+    })
+  }
+
   const onChange = (pagination: any) => {
     const { current, pageSize } = pagination;
     getData(current, pageSize)
@@ -55,6 +66,16 @@ const Test = () => {
   }
 
   const columns = [
+    {
+      title: '活动封面',
+      dataIndex: 'cover',
+      key: 'cover',
+      render: (data) => {
+        return (
+          <img style={{width:'50px',height:'50px'}} src={data.cover} alt="" />
+        )
+      }
+    },
     {
       title: '活动标题',
       dataIndex: 'tittle',
@@ -79,6 +100,16 @@ const Test = () => {
       }
     },
     {
+      title: '参选人数',
+      dataIndex: 'pnum',
+      key: 'pnum',
+    },
+    {
+      title: '票数',
+      dataIndex: 'vnum',
+      key: 'vnum',
+    },
+    {
       title: '活动状态',
       dataIndex: 'state',
       key: 'state',
@@ -100,6 +131,8 @@ const Test = () => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
+          <a style={{color:'green'}} onClick={() => changeAcitivity(_.id,'approved')}>通过</a>
+          <a style={{color:'red'}} onClick={() => changeAcitivity(_.id,'rejected')}>拒绝</a>
           <a onClick={test} style={{ color: 'blue' }}>
             查看详情
           </a>

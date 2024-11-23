@@ -62,7 +62,7 @@ const SlideBar: FC<ISlideBar> = ({ history, menus, collapsed }: ISlideBar) => {
   }, []);
 
   return (
-    <Sider trigger={null} collapsible collapsed={collapsed}>
+    <Sider style={{position: 'fixed'}} trigger={null} collapsible collapsed={collapsed}>
       <Menu
         className={style['menus']}
         openKeys={openKeys}

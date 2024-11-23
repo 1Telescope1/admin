@@ -167,7 +167,7 @@ const Home: FC<IHome> = ({ history }: IHome) => {
   return (
     <Layout>
       {menus && <SideBar menus={menus} collapsed={collapsed} history={history} />}
-      <Layout className={style['site-layout']}>{renderContent()}</Layout>
+      <Layout style={{ marginLeft: '200px' }} className={style['site-layout']}>{renderContent()}</Layout>
     </Layout>
   );
 };
