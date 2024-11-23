@@ -1,13 +1,6 @@
 {
   "admin": [
     {
-      "component": "系统首页",
-      "path": "/dashboard",
-      "key": "dashboard",
-      "icon": "dashboard",
-      "sub": []
-    },
-    {
       "component": "数据管理列表",
       "path": "/table",
       "key": "table",
@@ -24,13 +17,6 @@
           "key": "table/user"
         }
       ]
-    },
-    {
-      "component": "404页",
-      "path": "/404",
-      "key": "404",
-      "icon": "404",
-      "sub": []
     }
   ],
   "zenquan": [

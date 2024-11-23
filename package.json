@@ -5,7 +5,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "cross-env vite",
-    "build": "rimraf dist && cross-env tsc && vite build",
+    "build": "vite build",
     "serve": "vite preview",
     "lint:script": "eslint -c .eslintrc.js 'src/**/*.ts' 'src/**/*.tsx' --cache --fix",
     "lint:style": "stylelint src/**/*.scss src/**/*.css --fix",
