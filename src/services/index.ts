@@ -14,3 +14,5 @@ export const reqUserList = (data) => request(`/api/v1/users/query`, 'POST', data
 export const reqBanUser = (id) => request('/api/v1/users/ban', 'GET', { id }, { id })
 
 export const reqUnBanUser = (id) => request('/api/v1/users/unBan', 'GET', { id }, { id })
+
+export const reqAcitivityUser = (id) => request('/api/v1/activity/allvote', 'GET', { id }, { id })
