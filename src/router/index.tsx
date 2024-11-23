@@ -6,48 +6,33 @@ import { LoadingOutlined } from '@ant-design/icons';
 import random from 'number-random';
 
 const CommonRoute = lazy(() => import('/@/components/CommonRoute'));
-const Dashboard = lazy(() => import('/@/pages/Dashboard'));
-const EditableTable = lazy(() => import('/@/pages/Table/EditableTable'));
-const DragSortingTable = lazy(() => import('/@/pages/Table/DragSortingTable'));
 const Test = lazy(() => import('/@/pages/Table/Test'));
-const LineChart = lazy(() => import('/@/pages/Chart/LineChart'));
-const PieChart = lazy(() => import('/@/pages/Chart/PieChart'));
 const NotFound = lazy(() => import('/@/pages/NotFound'));
+const User = lazy(() => import('/@/pages/Table/User'))
+const AcitivityDetail = lazy(() => import('/@/pages/Table/ActivityDetail'))
 
 const routes: Array<{
   component:
-    | React.ComponentType<any>
-    | React.ComponentType<RouteComponentProps<any, StaticContext, unknown>>;
+  | React.ComponentType<any>
+  | React.ComponentType<RouteComponentProps<any, StaticContext, unknown>>;
   path?: string;
 }> = [
-  {
-    component: Dashboard,
-    path: '/dashboard',
-  },
-  {
-    component: EditableTable,
-    path: '/table/editableTable',
-  },
-  {
-    component: DragSortingTable,
-    path: '/table/dragSortingTable',
-  },
-  {
-    component: Test,
-    path: '/table/test',
-  },
-  {
-    component: LineChart,
-    path: '/chart/lineChart',
-  },
-  {
-    component: PieChart,
-    path: '/chart/pieChart',
-  },
-  {
-    component: NotFound,
-  },
-];
+    {
+      component: Test,
+      path: '/table/test',
+    },
+    {
+      component: User,
+      path: '/table/user',
+    },
+    {
+      component: AcitivityDetail,
+      path: '/table/activityDetail/:id',
+    },
+    {
+      component: NotFound,
+    },
+  ];
 
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const AppRouter = () => (
@@ -63,8 +48,8 @@ const AppRouter = () => (
         routes.map(
           (route: {
             component:
-              | React.ComponentType<any>
-              | React.ComponentType<RouteComponentProps<any, StaticContext, unknown>>;
+            | React.ComponentType<any>
+            | React.ComponentType<RouteComponentProps<any, StaticContext, unknown>>;
             path?: string;
           }) => {
             const key = random(100, 999),

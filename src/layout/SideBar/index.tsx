@@ -43,7 +43,7 @@ const SlideBar: FC<ISlideBar> = ({ history, menus, collapsed }: ISlideBar) => {
     history.push(path);
   };
 
-  const onOpenChange = (item: string[]) => {
+  const onOpenChange = (item: string[]) => {    
     setOpenKeys(item);
   };
 

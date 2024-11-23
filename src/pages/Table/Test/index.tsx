@@ -6,6 +6,7 @@ import CommonTable from '/@/components/CommonTable';
 import CommonForm from '/@/components/CommonForm';
 import { reqChangeAcitivity, reqDeleteActivity, reqGetActivityList } from '/@/services';
 import dayjs from 'dayjs'
+import { useHistory } from 'react-router-dom';
 
 const Test = () => {
   const { t } = useChangeLang();
@@ -63,6 +64,13 @@ const Test = () => {
       message.success('This is a success message');
       getData()
     })
+  }
+  const history = useHistory();
+
+  const gotoActivityDetail = (data) => {
+    console.log(data, 123);
+    const id = data.id
+    history.push(`/table/activityDetail/${id}`);
   }
 
   const columns = [
@@ -133,7 +141,7 @@ const Test = () => {
         <Space size="middle">
           <a style={{color:'green'}} onClick={() => changeAcitivity(_.id,'approved')}>通过</a>
           <a style={{color:'red'}} onClick={() => changeAcitivity(_.id,'rejected')}>拒绝</a>
-          <a onClick={test} style={{ color: 'blue' }}>
+          <a onClick={() => gotoActivityDetail(_)} style={{ color: 'blue' }}>
             查看详情
           </a>
           <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
@@ -196,7 +204,7 @@ const Test = () => {
 
   return (
     <>
-      <CustomBreadcrumb arr={[t('table.editableTable.menu'), t('table.editableTable.subMenu')]} />
+      <CustomBreadcrumb arr={['数据列表', '活动列表']} />
       <CommonForm
         ref={formRef}
         items={formItems}
