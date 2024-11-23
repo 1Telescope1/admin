@@ -19,7 +19,7 @@ const routes: Array<{
 }> = [
     {
       component: Test,
-      path: '/table/test',
+      path: '/table/activity',
     },
     {
       component: User,

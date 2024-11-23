@@ -11,7 +11,7 @@ import Home from './pages/Home';
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 const App: FC = () => {
-  console.log(import.meta.env.VITE_BASE_API);
+  console.log(import.meta.env.VITE_BASE_API, 123);
   
   return (
     <Provider {...store} className="App">

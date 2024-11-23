@@ -77,9 +77,9 @@ const Test = () => {
       title: '活动封面',
       dataIndex: 'cover',
       key: 'cover',
-      render: (data) => {
+      render: (data) => {        
         return (
-          <img style={{width:'50px',height:'50px'}} src={data.cover} alt="" />
+          <img style={{width:'50px',height:'50px'}} src={data} alt="" />
         )
       }
     },

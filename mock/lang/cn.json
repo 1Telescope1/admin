@@ -8,8 +8,8 @@
       "sub": [
         {
           "component": "活动列表",
-          "path": "/table/test",
-          "key": "table/test"
+          "path": "/table/activity",
+          "key": "table/activity"
         },
         {
           "component": "用户列表",

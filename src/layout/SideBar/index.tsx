@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, memo, useMemo } from 'react';
+import React, { FC, useState, useEffect, memo } from 'react';
 import { Menu, Layout } from 'antd';
 import {
   TableOutlined,
@@ -11,7 +11,14 @@ import {
 import style from './index.module.less';
 
 const { Sider } = Layout;
-const { SubMenu } = Menu;
+
+interface CompItemType {
+  key: string;
+  component: React.ReactNode;
+  path: string;
+  sub?: CompItemType[];
+  icon?: string;
+}
 
 interface ISlideBar {
   history: any;
@@ -19,35 +26,38 @@ interface ISlideBar {
   collapsed: boolean;
 }
 
-const SlideBar: FC<ISlideBar> = ({ history, menus, collapsed }: ISlideBar) => {
+const SlideBar: FC<ISlideBar> = ({ history, menus, collapsed }) => {
   const [openKeys, setOpenKeys] = useState<string[]>([]);
   const [selectedKeys, setSelectedKeys] = useState<string[]>(['dashboard']);
 
   const renderIcon = (icon: string) => {
-    if (icon === 'table') {
-      return <TableOutlined />;
-    } else if (icon === 'chart') {
-      return <BarChartOutlined />;
-    } else if (icon === 'components') {
-      return <AppstoreOutlined />;
-    } else if (icon === 'excel') {
-      return <FileExcelOutlined />;
-    } else if (icon === '404') {
-      return <MehOutlined />;
-    } else if (icon === 'dashboard') {
-      return <HomeOutlined />;
+    switch (icon) {
+      case 'table':
+        return <TableOutlined />;
+      case 'chart':
+        return <BarChartOutlined />;
+      case 'components':
+        return <AppstoreOutlined />;
+      case 'excel':
+        return <FileExcelOutlined />;
+      case '404':
+        return <MehOutlined />;
+      case 'dashboard':
+        return <HomeOutlined />;
+      default:
+        return null;
     }
   };
 
-  const selectMenuItem = (path: string) => {
-    history.push(path);
-  };
-
-  const onOpenChange = (item: string[]) => {    
-    setOpenKeys(item);
+  const onOpenChange = (keys: string[]) => {
+    setOpenKeys(keys);
   };
 
   const onMenuItemClick = (item: { keyPath: string[]; key: string }) => {
+    const selectedMenu = menus.find(menu => menu.key === item.key) || menus.flatMap(menu => menu.sub || []).find(subMenu => subMenu.key === item.key);
+    if (selectedMenu) {
+      history.push(selectedMenu.path);
+    }
     sessionStorage.setItem('openKeys', JSON.stringify(item.keyPath));
     sessionStorage.setItem('selectedKeys', JSON.stringify([item.key]));
     setSelectedKeys([item.key]);
@@ -55,14 +65,14 @@ const SlideBar: FC<ISlideBar> = ({ history, menus, collapsed }: ISlideBar) => {
   };
 
   useEffect(() => {
-    const openKeys = sessionStorage.getItem('openKeys'),
-      selectedKeys = sessionStorage.getItem('selectedKeys');
-    setOpenKeys(openKeys ? JSON.parse(openKeys) : []);
-    setSelectedKeys(selectedKeys ? JSON.parse(selectedKeys) : ['dashboard']);
+    const storedOpenKeys = sessionStorage.getItem('openKeys');
+    const storedSelectedKeys = sessionStorage.getItem('selectedKeys');
+    setOpenKeys(storedOpenKeys ? JSON.parse(storedOpenKeys) : []);
+    setSelectedKeys(storedSelectedKeys ? JSON.parse(storedSelectedKeys) : ['dashboard']);
   }, []);
 
   return (
-    <Sider style={{position: 'fixed'}} trigger={null} collapsible collapsed={collapsed}>
+    <Sider style={{ position: 'fixed' }} trigger={null} collapsible collapsed={collapsed}>
       <Menu
         className={style['menus']}
         openKeys={openKeys}
@@ -72,7 +82,7 @@ const SlideBar: FC<ISlideBar> = ({ history, menus, collapsed }: ISlideBar) => {
         onOpenChange={onOpenChange}
         onClick={onMenuItemClick}
         items={menus.map((menu: CompItemType) => {
-          const { component, key, path, sub, icon } = menu;
+          const { component, key, sub, icon } = menu;
 
           if (sub && sub.length) {
             return {
@@ -81,14 +91,14 @@ const SlideBar: FC<ISlideBar> = ({ history, menus, collapsed }: ISlideBar) => {
               label: component,
               children: sub.map((s: CompItemType) => ({
                 key: s.key,
-                label: <span onClick={() => selectMenuItem(s.path)}>{s.component}</span>,
+                label: s.component,
               })),
             };
           } else {
             return {
               key,
               icon: icon && renderIcon(icon),
-              label: <span onClick={() => selectMenuItem(path)}>{component}</span>,
+              label: component,
             };
           }
         })}

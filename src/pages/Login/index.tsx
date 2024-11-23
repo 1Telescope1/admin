@@ -54,7 +54,7 @@ const Login: FC<ILogin> = ({ history }: ILogin) => {
         avatar,
       });
       await loginStore.toggleLogin(true, { userName });
-      await history.push('/dashboard');
+      await history.push('/table/activity');
     } else {
       message.error(`${res.msg}, 用户名和密码不符`);
     }
