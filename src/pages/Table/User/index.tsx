@@ -67,7 +67,7 @@ const Test = () => {
       key: 'avatar',
       render: (data) => {
         return (
-          <img style={{ width: '50px', height: '50px' }} src={data?.avatar} alt="" />
+          <img style={{ width: '50px', height: '50px' }} src={data} alt="" />
         )
       }
     },
